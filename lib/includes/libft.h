@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 23:24:35 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/20 17:18:32 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/22 14:37:24 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <sys/stat.h>
 # include <limits.h>
 
-# define BUFF_SIZE 32
 # define MAX_FD 10000
+# define BUFF_SIZE 4096
 
 typedef struct		s_list
 {
@@ -29,6 +29,7 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
 
 /*
 **---------------------macro---------------------
@@ -97,6 +98,11 @@ char				*ft_str_lower(char *s);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_c_cnt(char *str, char c);
+char				*ft_strmerge(char *a, char *b);
+char				*ft_strndup(const char *s1, size_t n);
+char				*ft_strnjoin(char const *s1, char const *s2, size_t len);
+
+
 
 /*
 **---------------------number descriptor---------------------
@@ -118,8 +124,6 @@ int					get_big(int a, int b);
 int					get_small(int a, int b);
 long				ft_atol(const char *str);
 void				ft_n_swap(int *a, int *b);
-
-
 
 /*
 **---------------------checking---------------------
@@ -159,6 +163,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
 int					get_next_line(const int fd, char **line);
 int					get_file(int fd, char **file);
+int					gnl_linked_lst(int const fd, char **line);
 
 /*
 **---------------------free---------------------

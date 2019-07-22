@@ -1,24 +1,26 @@
 #include "filler.h"
 
-int	get_player_info(t_filler *filler, char *line)
+int	get_player_info(t_filler *filler)
 {
 	static int	nb_of_p = 0;
 	char		**arr;
+	char		*line;
 
-	if (nb_of_p || filler->p1 || (strstr(line, "p1") && strstr(line, "p2")))
+	line = NULL;
+	arr = NULL;
+	if (nb_of_p)
 		exit_on_error("player info");
-	arr = ft_strsplit(line, ' ');
+	if (gnl_linked_lst(0, &line) > 0 && strstr(line, "$$$ exec"))
+	{
+		arr = ft_strsplit(line, ' ');
+		ft_strdel(&line);
+	}
 	if (strcmp(arr[0], "$$$") || strcmp(arr[1], "exec") || strcmp(arr[3], ":"))
 		exit_on_error("player info");
 	if (!strcmp(arr[2], "p1"))
 	{
 		filler->p1 = 'O';
 		filler->p2 = 'X';
-	}
-	else
-	{
-		filler->p1 = 'X';
-		filler->p2 = 'O';
 	}
 	nb_of_p += 1;
 	free_char_pp(arr);
@@ -40,12 +42,12 @@ int	get_map_info(t_filler *filler, char *line)
 	if (filler->map_size.y <= 0 || filler->map_size.x <= 0)
 		exit_on_error("map info");
 	free_char_pp(arr);
+	get_current_map(filler, filler->map_size.y + 1);
 	return (0);
 }
 
-int	get_current_map(t_filler *filler)
+int	get_current_map(t_filler *filler, int lines)
 {
-	int		nb_lines;
 	char	*tmp;
 	char	*res;
 
@@ -53,19 +55,13 @@ int	get_current_map(t_filler *filler)
 	f = fopen("./error","w");
 
 	tmp = NULL;
-	nb_lines = filler->map_size.y;
-	// while (nb_lines-- >= 0)
-	while (nb_lines-- && get_next_line(STDIN_FILENO, &tmp) >= 0)
+	while (lines-- && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
-		if (nb_lines != filler->map_size.y - 1)
-		{
-			fprintf(f,"[%d] \t%s\n", nb_lines, tmp);
-		}
+		if (lines != filler->map_size.y)
+			fprintf(f,"[%d] \t%s\n", lines, ft_strsplit(tmp, ' ')[1]);
+		if (lines == 0)
+			filler->map = ft_strdup(tmp);
 		ft_strdel(&tmp);
-
-
-		// if(nb_lines == 5)
-		// 	return (0);
 	}
 	fprintf(f,"read all!\n");
 	fclose(f);
@@ -89,12 +85,12 @@ int	get_piece_info(t_filler *filler, char *line)
 	if (filler->piece_size.y <= 0 || filler->piece_size.x <= 0)
 		exit_on_error("piece info");
 	free_char_pp(arr);
+	get_current_piece(filler, filler->piece_size.y);
 	return (0);
 }
 
-int	get_current_piece(t_filler *filler)
+int	get_current_piece(t_filler *filler, int lines)
 {
-	int		nb_lines;
 	char	*tmp;
 	char	*res;
 
@@ -102,14 +98,16 @@ int	get_current_piece(t_filler *filler)
 	f = fopen("./error","w");
 
 	tmp = NULL;
-	nb_lines = filler->piece_size.y + 1;
-	// while (nb_lines-- >= 0)
-	while (--nb_lines && get_next_line(STDIN_FILENO, &tmp) >= 0)
+	while (lines-- && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
-		fprintf(f,"[%d] \t%s\n", nb_lines, tmp);
+		fprintf(f,"[%d] \t%s\n", lines, tmp);
+		if (lines == 0 && tmp)
+		{
+			filler->map = ft_strdup(tmp);
+			ft_strdel(&tmp);
+			break;
+		}
 		ft_strdel(&tmp);
-		// if(nb_lines == 5)
-		// 	return (0);
 	}
 	fprintf(f,"read all!\n");
 	fclose(f);
