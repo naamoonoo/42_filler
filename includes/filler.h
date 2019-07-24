@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/22 14:26:55 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/23 17:20:40 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,23 @@ typedef struct	s_filler {
 	char 		p1;
 	char		p2;
 	t_cor		map_size;
-	char		*map;
+	t_cor		p1_loc;
+	t_cor		p2_loc;
+	char		**map;
+	int			**heat_map;
 	t_cor		piece_size;
-	char		*piece;
+	char		**piece;
 }				t_filler;
 
 int				get_player_info(t_filler *filler);
-int				get_data(t_filler *filler);
-int				get_map_info(t_filler *filler, char *line);
+void			get_data(t_filler *filler);
+int 			get_info_of(t_cor *size, char *line);
 int				get_current_map(t_filler *filler, int lines);
-int				get_piece_info(t_filler *filler, char *line);
 int				get_current_piece(t_filler *filler, int lines);
+
+void			put_piece(t_filler *filler);
+void			get_heat_map(t_filler *filler);
+void			heat_map_maker(t_filler *filler, int x, int y, int from);
 
 void			exit_on_error(char *msg);
 #endif
