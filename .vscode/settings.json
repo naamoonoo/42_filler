@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"*.tpp": "cpp",
-		"libft.h": "c"
+		"libft.h": "c",
+		"filler.h": "c"
 	}
 }

@@ -93,7 +93,7 @@ int	get_current_piece(t_filler *filler, int lines)
 	int		line;
 
 	FILE *f;
-	f = fopen("./error","w");
+	f = fopen("./piece","w");
 
 	line = -1;
 	tmp = NULL;
