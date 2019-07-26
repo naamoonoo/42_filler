@@ -14,8 +14,8 @@ int main()
 		get_data(filler);
 
 		put_piece(filler);
-		break ;
-		// continue ;
+		// break ;
+		continue ;
 		// for (int y = 0; y < filler->map_size.y - 1; y++)
 		// {
 		// 	for (int x = 0; x < filler->map_size.x - 1; x++)
