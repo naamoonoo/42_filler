@@ -102,6 +102,7 @@ int	get_current_piece(t_filler *filler, int lines)
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
 		filler->piece[line] = ft_strdup(tmp);
+		filler->p_cnt += ft_c_cnt(tmp, '*');
 		fprintf(f,"[%d] \t%s\n", line, tmp);
 		ft_strdel(&tmp);
 		if (line == lines - 1)

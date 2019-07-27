@@ -9,12 +9,16 @@ int main()
 	filler = ft_memalloc(sizeof(t_filler));
 	if (!filler->p1)
 		get_player_info(filler);
+	int i = 0;
+	i++;
 	while (1)
 	{
 		get_data(filler);
-
+	filler->map[11][14] = 'X';
+	filler->map[10][14] = 'X';
 		put_piece(filler);
-		// break ;
+		if (++i == 10)
+			break ;
 		// continue ;
 		// for (int y = 0; y < filler->map_size.y - 1; y++)
 		// {

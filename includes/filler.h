@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/26 00:13:37 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/26 17:25:49 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct	s_filler {
 	int			**heat_map;
 	t_cor		piece_size;
 	char		**piece;
+	int			p_cnt;
 	int			heat_score;
 }				t_filler;
 

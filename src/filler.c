@@ -32,9 +32,9 @@ void			put_piece(t_filler *filler)
 	if (filler->best_pos.x >= 0 && filler->best_pos.y >= 0)
 		FP("%d %d\n", filler->best_pos.y, filler->best_pos.x);
 	else
-		FP("%d %d\n", filler->p1_pos.y, filler->p1_pos.x);
+		FP("8 2\n");
+		// FP("%d %d\n", filler->p1_pos.y, filler->p1_pos.x);
 	// fclose(f);
-
 	// FP("50 50\n");
 
 	// calculate
@@ -71,8 +71,11 @@ void	get_best_position(t_filler *filler, int x, int y)
 		ix = -1;
 		while (++ix < filler->map_size.x - 1)
 		{
-			if (ix + filler->piece_size.x < filler->map_size.x - 1 &&
-				iy + filler->piece_size.y < filler->map_size.y - 1 &&
+			// if (ix + filler->piece_size.x < filler->map_size.x  &&
+			// 	iy + filler->piece_size.y < filler->map_size.y  &&
+			if (ix  < filler->map_size.x - 1 &&
+				iy < filler->map_size.y - 1 &&
+				!ft_strchr("xX", filler->map[iy][ix]) &&
 				(tmp = is_valid(filler, ix, iy, f)) > 0
 				&& tmp <= filler->heat_score)
 			{
@@ -106,9 +109,10 @@ int		is_valid(t_filler *filler, int x, int y, FILE *f)
 			{
 				if (ft_strchr("oO", filler->map[t.y + y][t.x + x])
 					&& filler->piece[t.y][t.x] == '*')
-					is_valid = 1;
-				if (filler->piece[t.y][t.x] == '*' &&
-					filler->heat_map[t.y + y][t.x + x] != 0
+					is_valid += 1;
+				if (ft_strchr("xX", filler->map[t.y + y][t.x + x]))
+					is_valid = INT_MIN;
+				if (filler->heat_map[t.y + y][t.x + x] != 0
 					&& filler->heat_map[t.y + y][t.x + x] <= min)
 					min = filler->heat_map[t.y + y][t.x + x];
 			}
@@ -117,29 +121,7 @@ int		is_valid(t_filler *filler, int x, int y, FILE *f)
 	// if (is_valid)
 	// 	fprintf(f, "curr heat : %d\t new score is%d\n", filler->heat_score, min);
 	(void)f;
-	return is_valid ? min : -1;
+	return (is_valid > 0 && is_valid != filler->p_cnt) ? min : -1;
 }
 
-// void	update_position(t_filler *filler, int x, int y)
-// {
-// 	int		iy;
-// 	int		ix;
-// 	int		tmp;
-
-// 	iy = -1;
-// 	while (++iy < filler->piece_size.y)
-// 	{
-// 		ix = -1;
-// 		while (++ix < filler->piece_size.x)
-// 		{
-// 			if (x - ix >= 0 && y - iy >= 0 &&
-// 				(tmp = is_valid(filler, x - ix, y - iy)) > 0
-// 				&& tmp < filler->heat_score)
-// 				{
-// 					filler->best_pos.x = x - ix;
-// 					filler->best_pos.y = y - iy;
-// 					filler->heat_score = tmp;
-// 				}
-// 		}
-// 	}
-// }
+// int is_surrounded
