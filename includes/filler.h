@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/25 20:06:05 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/26 00:13:37 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void			put_piece(t_filler *filler);
 void			get_heat_map(t_filler *filler);
 void			heat_map_maker(t_filler *filler, int x, int y, int from);
 void			get_best_position(t_filler *filler, int x, int y);
-int				is_valid(t_filler *filler, int x, int y);
+// int				is_valid(t_filler *filler, int x, int y);
+int				is_valid(t_filler *filler, int x, int y, FILE *f);
 void			update_position(t_filler *filler, int x, int y);
 
 void			exit_on_error(char *msg);

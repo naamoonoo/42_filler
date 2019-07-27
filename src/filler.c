@@ -9,12 +9,12 @@ void			put_piece(t_filler *filler)
 
 	get_heat_map(filler);
 
-		for (int y = 0; y < filler->map_size.y - 1; y++)
-		{
-			for (int x = 0; x < filler->map_size.x - 1; x++)
-				fprintf(f, "%d\t", filler->heat_map[y][x]);
-			fprintf(f, "\n");
-		}
+	for (int y = 0; y < filler->map_size.y - 1; y++)
+	{
+		for (int x = 0; x < filler->map_size.x - 1; x++)
+			fprintf(f, "%d\t", filler->heat_map[y][x]);
+		fprintf(f, "\n");
+	}
 
 	filler->heat_score = 999;
 	filler->best_pos.y = -1;
@@ -33,7 +33,7 @@ void			put_piece(t_filler *filler)
 		FP("%d %d\n", filler->best_pos.y, filler->best_pos.x);
 	else
 		FP("%d %d\n", filler->p1_pos.y, filler->p1_pos.x);
-	fclose(f);
+	// fclose(f);
 
 	// FP("50 50\n");
 
@@ -44,56 +44,6 @@ void			put_piece(t_filler *filler)
 	// FP("x y\n");
 }
 
-void	get_heat_map(t_filler *filler)
-{
-	int 	y;
-	int 	x;
-
-	filler->heat_map = (int **)malloc(sizeof(int *) * (filler->map_size.y - 1));
-	y = -1;
-	while (++y < filler->map_size.y - 1)
-	{
-		x = -1;
-		filler->heat_map[y] = ft_memalloc(sizeof(int) * filler->map_size.x - 1);
-		while (++x < filler->map_size.x - 1)
-		{
-			if (ft_strchr("oO", filler->map[y][x]))
-			{
-				filler->p1_pos.x = x;
-				filler->p1_pos.y = y;
-			}
-			else if (ft_strchr("xX", filler->map[y][x]))
-			{
-				filler->p2_pos.x = x;
-				filler->p2_pos.y = y;
-			}
-			filler->heat_map[y][x] = 999;
-		}
-	}
-	heat_map_maker(filler, filler->p2_pos.x, filler->p2_pos.y, 0);
-}
-
-void	heat_map_maker(t_filler *filler, int x, int y, int from)
-{
-	int		**tab;
-	t_cor	size;
-
-	if (x < 0 || x > filler->map_size.x - 1 || y < 0 || y > filler->map_size.y - 1
-	|| ft_strchr("oO", filler->map[y][x]) )
-		return ;
-	tab = filler->heat_map;
-	size = filler->map_size;
-	if (from <= tab[y][x])
-		tab[y][x] = from++;
-	if (x - 1 >= 0 && (tab[y][x - 1] == 0 || tab[y][x - 1] > from))
-		heat_map_maker(filler, x - 1, y, from);
-	if (x + 1 < size.x - 1 && (tab[y][x + 1] == 0 || tab[y][x + 1] > from))
-		heat_map_maker(filler, x + 1, y, from);
-	if (y - 1 >= 0 && (tab[y - 1][x] == 0 || tab[y - 1][x] > from))
-		heat_map_maker(filler, x, y - 1, from);
-	if (y + 1 < size.y - 1 && (tab[y + 1][x] == 0 || tab[y + 1][x] > from))
-		heat_map_maker(filler, x, y + 1, from);
-}
 
 void	get_best_position(t_filler *filler, int x, int y)
 {
@@ -111,9 +61,9 @@ void	get_best_position(t_filler *filler, int x, int y)
 	// 	get_best_position(filler, x, y - 1);
 	// // if (y + 1 < filler->map_size.y - 1 && ft_strchr("oO", filler->map[y + 1][x]))
 	// // 	get_best_position(filler, x, y + 1);
-	int ix;
-	int iy;
-	int tmp;
+	int		ix;
+	int		iy;
+	int		tmp;
 
 	iy = -1;
 	while (++iy < filler->map_size.y - 1)
@@ -123,8 +73,8 @@ void	get_best_position(t_filler *filler, int x, int y)
 		{
 			if (ix + filler->piece_size.x < filler->map_size.x - 1 &&
 				iy + filler->piece_size.y < filler->map_size.y - 1 &&
-				(tmp = is_valid(filler, ix, iy)) > 0 &&
-				tmp < filler->heat_score)
+				(tmp = is_valid(filler, ix, iy, f)) > 0
+				&& tmp <= filler->heat_score)
 			{
 				fprintf(f, "updated with %d, %d [%d]\n", ix, iy, tmp);
 				filler->best_pos.x = ix;
@@ -137,14 +87,14 @@ void	get_best_position(t_filler *filler, int x, int y)
 	x = y + 1;
 }
 
-int		is_valid(t_filler *filler, int x, int y)
+int		is_valid(t_filler *filler, int x, int y, FILE *f)
 {
 	t_cor	t;
 	int		is_valid;
 	int		min;
 
 	t.y = -1;
-	min = INT_MAX;
+	min = 999;
 	is_valid = 0;
 	while (++t.y < filler->piece_size.y)
 	{
@@ -157,35 +107,39 @@ int		is_valid(t_filler *filler, int x, int y)
 				if (ft_strchr("oO", filler->map[t.y + y][t.x + x])
 					&& filler->piece[t.y][t.x] == '*')
 					is_valid = 1;
-				if (filler->heat_map[t.y + y][t.x + x] != 0
-					&& filler->heat_map[t.y + y][t.x + x] < min)
+				if (filler->piece[t.y][t.x] == '*' &&
+					filler->heat_map[t.y + y][t.x + x] != 0
+					&& filler->heat_map[t.y + y][t.x + x] <= min)
 					min = filler->heat_map[t.y + y][t.x + x];
 			}
 		}
 	}
+	// if (is_valid)
+	// 	fprintf(f, "curr heat : %d\t new score is%d\n", filler->heat_score, min);
+	(void)f;
 	return is_valid ? min : -1;
 }
 
-void	update_position(t_filler *filler, int x, int y)
-{
-	int		iy;
-	int		ix;
-	int		tmp;
+// void	update_position(t_filler *filler, int x, int y)
+// {
+// 	int		iy;
+// 	int		ix;
+// 	int		tmp;
 
-	iy = -1;
-	while (++iy < filler->piece_size.y)
-	{
-		ix = -1;
-		while (++ix < filler->piece_size.x)
-		{
-			if (x - ix >= 0 && y - iy >= 0 &&
-				(tmp = is_valid(filler, x - ix, y - iy)) > 0
-				&& tmp < filler->heat_score)
-				{
-					filler->best_pos.x = x - ix;
-					filler->best_pos.y = y - iy;
-					filler->heat_score = tmp;
-				}
-		}
-	}
-}
+// 	iy = -1;
+// 	while (++iy < filler->piece_size.y)
+// 	{
+// 		ix = -1;
+// 		while (++ix < filler->piece_size.x)
+// 		{
+// 			if (x - ix >= 0 && y - iy >= 0 &&
+// 				(tmp = is_valid(filler, x - ix, y - iy)) > 0
+// 				&& tmp < filler->heat_score)
+// 				{
+// 					filler->best_pos.x = x - ix;
+// 					filler->best_pos.y = y - iy;
+// 					filler->heat_score = tmp;
+// 				}
+// 		}
+// 	}
+// }
