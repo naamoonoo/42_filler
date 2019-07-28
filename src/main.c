@@ -11,14 +11,21 @@ int main()
 		get_player_info(filler);
 	int i = 0;
 	i++;
+	FILE *f = fopen("./res", "w");
+
 	while (1)
 	{
 		get_data(filler);
-	filler->map[11][14] = 'X';
-	filler->map[10][14] = 'X';
+	// filler->map[11][14] = 'X';
+	// filler->map[10][14] = 'X';
 		put_piece(filler);
-		if (++i == 10)
-			break ;
+
+
+		// if (++i == 15)
+		// {
+		// 	fprintf(f, "%d %d\n", filler->best_pos.y, filler->best_pos.x);
+		// 	break ;
+		// }
 		// continue ;
 		// for (int y = 0; y < filler->map_size.y - 1; y++)
 		// {
@@ -34,6 +41,7 @@ int main()
 		// free(filler->heat_map);
 		// break;
 	}
+	fclose(f);
 	// while (1)
 	// 	sleep(1);
 	// if (get_data(filler) == 1)

@@ -14,6 +14,7 @@ void	get_data(t_filler *filler)
 		}
 		else if (strstr(line, "Piece"))
 		{
+			filler->p_cnt = 0;
 			get_info_of(&(filler->piece_size), line);
 			get_current_piece(filler, filler->piece_size.y);
 			break;

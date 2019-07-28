@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/26 17:25:49 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/28 12:29:48 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ int 			get_info_of(t_cor *size, char *line);
 int				get_current_map(t_filler *filler, int lines);
 int				get_current_piece(t_filler *filler, int lines);
 
-void			put_piece(t_filler *filler);
 void			get_heat_map(t_filler *filler);
 void			heat_map_maker(t_filler *filler, int x, int y, int from);
-void			get_best_position(t_filler *filler, int x, int y);
-// int				is_valid(t_filler *filler, int x, int y);
-int				is_valid(t_filler *filler, int x, int y, FILE *f);
-void			update_position(t_filler *filler, int x, int y);
+
+void			put_piece(t_filler *filler);
+void			get_best_position(t_filler *filler);
+int				is_valid(t_filler *filler, int x, int y);
+int				get_heat_score(t_filler *filler, int x, int y);
+// int				is_valid(t_filler *filler, int x, int y, FILE *f);
+// int				get_heat_score(t_filler *filler, int x, int y, FILE *f);
 
 void			exit_on_error(char *msg);
 #endif
