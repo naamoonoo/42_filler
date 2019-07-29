@@ -23,7 +23,7 @@ $(FILL)	:	obj $(OBJ)
 $(VISU)	:	obj $(OBJ_V)
 			@cd lib && make
 			@mv lib/libftprintf.a .
-			@$(CC) -o $(VISU) $(CFLAGS) $(OBJ_V) libftprintf.a -Iincludes -L lib -l SDL2-2.0.0
+			@$(CC) -o $(VISU) $(CFLAGS) $(OBJ_V) libftprintf.a -Iincludes -L framework/SDL2/lib/ -l SDL2-2.0.0
 			@echo "excutable file $(VISU) has been made"
 
 obj		:
