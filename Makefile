@@ -1,39 +1,44 @@
-NAME	=	hnam.filler
+FILL	=	hnam.filler
+VISU	=	visualizer
 
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -Iincludes -g -fsanitize=address
 
-SRC		=	$(wildcard src/*.c)
-OBJ		=	$(patsubst src/%.c, obj/%.o, $(SRC))
+SRC		=	$(wildcard src/filler/*.c)
+OBJ		=	$(patsubst src/filler/%.c, obj/filler/%.o, $(SRC))
+SRC_V	=	$(wildcard src/visualizer/*.c)
+OBJ_V	=	$(patsubst src/visualizer/%.c, obj/visualizer/%.o, $(SRC_V))
 
-all		:	$(NAME)
+all		:	$(FILL) $(VISU)
 
 obj/%.o	: 	src/%.c
 			@$(CC) $(CFLAGS) $(OPTION) -c -o $@ $<
 
-$(NAME)	:	obj $(OBJ)
+$(FILL)	:	obj $(OBJ)
 			@cd lib && make
 			@mv lib/libftprintf.a .
-			@$(CC) -o $(NAME) $(CFLAGS) $(OBJ) libftprintf.a
-			@echo "excutable file $(NAME) has been made"
+			@$(CC) -o $(FILL) $(CFLAGS) $(OBJ) libftprintf.a
+			@echo "excutable file $(FILL) has been made"
 
-# db		:	obj $(OBJ)
-# 			@cd lib && make
-# 			@mv lib/libftprintf.a .
-# 			@$(CC) -o $(MANE) $(CFLAGS) $(OBJ) libftprintf.a $(DEBUG)
-# 			@echo "excutable file $(NAME) with debug mode has been made"
+$(VISU)	:	obj $(OBJ_V)
+			@cd lib && make
+			@mv lib/libftprintf.a .
+			@$(CC) -o $(VISU) $(CFLAGS) $(OBJ_V) libftprintf.a -Iincludes -L lib -l SDL2-2.0.0
+			@echo "excutable file $(VISU) has been made"
 
 obj		:
 			@mkdir obj
+			@mkdir obj/filler
+			@mkdir obj/visualizer
 
 clean	:
 			-cd lib && make clean
 			-rm -rf obj
 
 fclean	:	clean
-			-rm -f $(NAME)
+			-rm -f $(FILL) $(VISU)
 			-rm -f libftprintf.a
 
-re		:	fclean $(NAME)
+re		:	fclean $(FILL) $(VISU)
 
 .PHONY	:	clean fclean re

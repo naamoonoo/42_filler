@@ -2,6 +2,8 @@
 	"files.associations": {
 		"*.tpp": "cpp",
 		"libft.h": "c",
-		"filler.h": "c"
+		"filler.h": "c",
+		"iostream": "c",
+		"stdio.h": "c"
 	}
 }
