@@ -8,8 +8,11 @@ void	init_data(t_filler *filler)
 	{
 		if (ft_strstr(line, "$$$ exec"))
 			player_info(filler, line);
-		// else if (ft_strstr(line, "$$$ exec p2"))
-		// 	filler->p2 = ft_strdup(ft_strchr(line, '['));
+		else if (ft_strstr(line, "Plateau"))
+		{
+			get_info_of(&(filler->map_size), line);
+
+		}
 		if (ft_strstr(line, "<got (O)"))
 			break;
 		free(line);
@@ -26,7 +29,6 @@ void	player_info(t_filler *filler, char *line)
 	arr = ft_strsplit(line, '/');
 	while (arr[i] && arr[i + 1])
 		i++;
-	// printf("trimed %s\n", ft_strtrim_by(arr[i], '.'));
 	if (ft_strstr(line, "p1"))
 		filler->p1 = ft_strsub(arr[i], 0, ft_strchr_idx(arr[i], '.'));
 	else if (ft_strstr(line, "p2"))

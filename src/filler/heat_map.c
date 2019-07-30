@@ -59,7 +59,6 @@ void	heat_map_maker(t_filler *filler, int x, int y, int from)
 		heat_map_maker(filler, x, y + 1, from);
 }
 
-// 다른 x가 있을때, 아래에서 위로 보냈는데, 위에가 엑스이면, 위에서 아래로 또 내려보넴, 지나간 놈은 체크해야할듯
 int		is_meet(t_filler *filler)
 {
 	int		ix;
@@ -85,3 +84,8 @@ int		is_meet(t_filler *filler)
 	}
 	return (0);
 }
+
+// int		is_surrounded(t_filler *filler)
+// {
+
+// }

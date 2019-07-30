@@ -2,7 +2,10 @@ FILL	=	hnam.filler
 VISU	=	visualizer
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -Iincludes -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
+
+LIB		=	-L frameworks/SDL2.framework/lib -l SDL2 -L frameworks/SDL2_ttf.framework/lib -l SDL2_ttf
+INCLUDE	=	-Iincludes -Iframeworks/SDL2.framework/includes/SDL2 -Iframeworks/SDL2_ttf.framework/includes
 
 SRC		=	$(wildcard src/filler/*.c)
 OBJ		=	$(patsubst src/filler/%.c, obj/filler/%.o, $(SRC))
@@ -12,7 +15,7 @@ OBJ_V	=	$(patsubst src/visualizer/%.c, obj/visualizer/%.o, $(SRC_V))
 all		:	$(FILL) $(VISU)
 
 obj/%.o	: 	src/%.c
-			@$(CC) $(CFLAGS) $(OPTION) -c -o $@ $<
+			@$(CC) $(CFLAGS) $(OPTION) -c -o $@ $< $(INCLUDE)
 
 $(FILL)	:	obj $(OBJ)
 			@cd lib && make
@@ -23,7 +26,7 @@ $(FILL)	:	obj $(OBJ)
 $(VISU)	:	obj $(OBJ_V)
 			@cd lib && make
 			@mv lib/libftprintf.a .
-			@$(CC) -o $(VISU) $(CFLAGS) $(OBJ_V) libftprintf.a -Iincludes -L framework/SDL2/lib/ -l SDL2-2.0.0
+			@$(CC) -o $(VISU) $(CFLAGS) $(OBJ_V) libftprintf.a $(INCLUDE) $(LIB)
 			@echo "excutable file $(VISU) has been made"
 
 obj		:

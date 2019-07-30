@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/07/29 00:59:24 by hnam             ###   ########.fr       */
+/*   Updated: 2019/07/29 15:32:06 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 # include "../lib/includes/libft.h"
 # include "filler.h"
 
-#include <SDL2/SDL.h>
-#include "../framework/SDL2/includes/SDL2/SDL.h"
+# include "SDL.h"
+# include "SDL_ttf.h"
+// #include "../frameworks/SDL2.framework/includes/SDL2/SDL.h"
+// #include "../frameworks/SDL2_ttf.framework/includes/SDL_ttf.h"
 
 typedef struct		s_sdl
 {
