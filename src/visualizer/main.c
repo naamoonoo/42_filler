@@ -18,11 +18,13 @@ void get_text_and_rect(SDL_Renderer *renderer, int x, int y, char *text,
 	rect->h = text_height;
 }
 
-void	event_handler(t_sdl *sdl)
+void	event_handler(t_sdl *sdl, t_f *filler)
 {
+
 	// int r = 0;
 	// int g = 0;
 	// int b = 0;
+	(void)filler;
 	while (sdl->is_running)
 	{
 		while (SDL_PollEvent(&(sdl->e))) {
@@ -31,23 +33,19 @@ void	event_handler(t_sdl *sdl)
 				sdl->is_running = 0;
 				printf("running is closed\n");
 			}
-			// else if (sdl->e.type == SDL_MOUSEMOTION)
-			// {
-			// 	// printf("mouse x = %d\n", sdl->e.motion.x);
-			// 	r = sdl->e.motion.x % 256;
-			// 	g = sdl->e.motion.y % 256;
-			// 	b = (sdl->e.motion.x + sdl->e.motion.y) % 256;
-			// 	printf("mouse is moving[%d %d %d]\n",r,g,b);
-			// }
-			// else if (event.type == SDL_KEYDOWN)
-			// {
-			// 	printf("keyboard = %d\t%d\n", event.key.windowID, event.key.type);
-			// }
 		}
-			draw_rectangle(sdl);
-			// SDL_UpdateWindowSurface(sdl->win);
 			SDL_RenderClear(sdl->ren);
+			draw_map(sdl, filler);
+			SDL_SetRenderDrawColor(sdl->ren, 0xdc, 0xdd, 0Xe1, 0);
 			SDL_RenderPresent(sdl->ren);
+
+                // SDL_RenderClear( gRenderer );
+
+                // //Render texture to screen
+                // SDL_RenderCopy( gRenderer, gTexture, NULL, NULL );
+
+                // //Update screen
+                // SDL_RenderPresent( gRenderer );
 
 			// SDL_RenderClear(sdl->ren);
 			// SDL_RenderCopy(sdl->ren, sdl->tex, NULL, &dest);
@@ -61,10 +59,14 @@ void	event_handler(t_sdl *sdl)
 	}
 }
 
+// void	make_
+
 int main()
 {
 	t_sdl	*sdl = sdl_init();
 	(void)sdl;
-	event_handler(sdl);
+	t_f *f = ft_memalloc(sizeof(t_f));
+	init_data(f);
+	event_handler(sdl, f);
 	return (0);
 }

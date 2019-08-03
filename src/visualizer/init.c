@@ -1,59 +1,99 @@
 #include "visualizer.h"
 
-void	init_data(t_filler *filler)
+void	init_data(t_f *f)
 {
 	char	*line = NULL;
 	int		fd = open("./trace", O_RDONLY);
+	int		round = 0;
+
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (ft_strstr(line, "$$$ exec"))
-			player_info(filler, line);
+			player_info(f, line);
 		else if (ft_strstr(line, "Plateau"))
 		{
-			// get_info_of(&(filler->map_size), line);
-
+			round == 0 ? info_of(&(f->map_size), line) : 0;
+			current_map(f, f->map_size.y + 1, fd);
 		}
-		if (ft_strstr(line, "<got (O)"))
-			break;
+		if (ft_strstr(line, "<got"))
+			if (round++ == 5)
+				break;
 		free(line);
 	}
-	printf("%s\n%s\n", filler->p1, filler->p2);
+	// printf("%s\n%s\n", f->p1, f->p2);
+	// for (int i = 0; f->m[i]; i++)
+	// {
+	// 	for (int j = 0; f->m[i][j]; j++)
+	// 		printf("%c ", f->m[i][j]);
+	// 	printf("\n");
+	// }
 }
 
-void	player_info(t_filler *filler, char *line)
+void	player_info(t_f *f, char *line)
 {
 	char	**arr;
 	int		i;
+	static	int call = 0;
 
+	if (call++ > 0)
+		return ;
 	i = 0;
 	arr = ft_strsplit(line, '/');
 	while (arr[i] && arr[i + 1])
 		i++;
 	if (ft_strstr(line, "p1"))
-		filler->p1 = ft_strsub(arr[i], 0, ft_strchr_idx(arr[i], '.'));
+		f->p1_name = ft_strsub(arr[i], 0, ft_strchr_idx(arr[i], '.'));
 	else if (ft_strstr(line, "p2"))
-		filler->p2 = ft_strsub(arr[i], 0, ft_strchr_idx(arr[i], '.'));
+		f->p2_name = ft_strsub(arr[i], 0, ft_strchr_idx(arr[i], '.'));
+	f->p1 = line[10] == '1' ? "oO" : "xX";
+	f->p2 = line[10] == '1' ? "xX" : "oO";
+	f->c_p1 = (t_cl){0xFC, 0X5c, 0X65, 255}; // #f7b731, #e58e26
+	f->c_p2 = (t_cl){0x38, 0x67, 0xd6, 255}; // #38ada9,
 	free_char_pp(arr);
 }
 
-void draw_rectangle(t_sdl *sdl)
+int info_of(t_cor *size, char *line)
 {
-	// Set render color to red ( background will be rendered in this color )
-	// Creat a rect at pos ( 50, 50 ) that's 50 pixels wide and 50 pixels high.
-	SDL_Rect r;
-	r.x = 50;
-	r.y = 50;
-	r.w = 50;
-	r.h = 50;
+	char	**arr;
+	char	*tmp;
 
-	// Set render color to blue ( rect will be rendered in this color )
-	SDL_SetRenderDrawColor( sdl->ren, 0, 0, 255, 255 );
+	if (ft_c_cnt(line, ' ') != 2)
+		return(1);
+	tmp = ft_strtrim_by(line, ':');
+	arr = ft_strsplit(tmp, ' ');
+	ft_strdel(&tmp);
+	size->y = ft_atoi(arr[1]);
+	size->x = ft_atoi(arr[2]);
+	free_char_pp(arr);
+	return (0);
+}
+// void draw_map(t_sdl *sdl, t_f *f)
 
-	// Render rect
-	SDL_RenderFillRect( sdl->ren, &r );
+int	current_map(t_f *f, int lines, int fd)
+{
+	char		*tmp;
+	int			line;
+	static int	call = 0;
 
-	// Render the rect to the screen
-	// SDL_RenderPresent(sdl->ren);
+	line = -1;
+	tmp = NULL;
+
+	if (call++ == 0)
+	{
+		f->m = (char **)malloc(sizeof(char *) * lines);
+		f->m[lines - 1] = NULL;
+	}
+	while (++line < lines && get_next_line(fd, &tmp) > 0)
+	{
+		if (line != 0)
+		{
+			if (call != 1)
+				free(f->m[line - 1]);
+			f->m[line - 1] = ft_strdup(tmp + 4);
+		}
+		ft_strdel(&tmp);
+	}
+	return (0);
 }
 
 t_sdl	*sdl_init()
@@ -71,8 +111,6 @@ t_sdl	*sdl_init()
 	sdl->font = TTF_OpenFont("src/visualizer/FreeSans.ttf", 24);
 	SDL_RenderSetLogicalSize(sdl->ren, sdl->w, sdl->h);
 	SDL_SetRenderDrawColor(sdl->ren, 169, 169, 169, 0);
-	// SDL_RenderClear(sdl->ren);
-	// SDL_RenderPresent(sdl->ren);
 	sdl->is_running = 1;
 	return (sdl);
 }
