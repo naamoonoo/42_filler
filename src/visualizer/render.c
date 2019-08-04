@@ -64,17 +64,19 @@ void	render_status_bar(t_sdl *sdl, t_f *f)
 
 	p1_w = ((f->s_p1 * 800) / (f->s_p1 + f->s_p2));
 	p2_w = 800 - p1_w;
+	SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
+	SDL_RenderDrawRect(sdl->ren, &(SDL_Rect){20, 760, 800, 20});
 	SDL_SetRenderDrawColor(sdl->ren,
 		f->c_p1.r, f->c_p1.g, f->c_p1.b, f->c_p1.a);
-	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){BOX_P_X, 760, p1_w, 20});
+	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){BOX_P_X + 1, 761, p1_w - 1, 18});
 	SDL_SetRenderDrawColor(sdl->ren,
 		f->c_p2.r, f->c_p2.g, f->c_p2.b, f->c_p2.a);
-	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){p1_w + BOX_P_X, 760, p2_w, 20});
+	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){p1_w + BOX_P_X + 1, 761, p2_w - 1, 18});
 }
 
 void	get_color_by(char p, t_f *f, t_sdl *sdl)
 {
-	t_cl	cl;
+	SDL_Color	cl;
 
 	cl = ft_strchr(f->p1, p) ? f->c_p1 : f->c_p2;
 	if (p >= 'o' && p <= 'z')

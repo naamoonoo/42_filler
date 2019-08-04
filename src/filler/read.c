@@ -75,10 +75,8 @@ int	get_current_map(t_filler *filler, int lines)
 	tmp = NULL;
 
 	if (call++ == 0)
-	{
 		filler->map = (char **)malloc(sizeof(char *) * lines);
-		filler->map[lines - 1] = NULL;
-	}
+	filler->map[lines - 1] = NULL;
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
 		if (line != 0)
