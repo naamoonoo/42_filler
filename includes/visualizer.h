@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/03 16:08:42 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/03 18:26:01 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 # include "SDL.h"
 # include "SDL_ttf.h"
-// #include "../frameworks/SDL2.framework/includes/SDL2/SDL.h"
-// #include "../frameworks/SDL2_ttf.framework/includes/SDL_ttf.h"
 
 # define MAP_Y f->map_size.y
 # define MAP_X f->map_size.x
@@ -51,6 +49,8 @@ typedef struct		s_color
 
 typedef struct		s_f
 {
+	int				fd;
+	char			*line;
 	char			*p1_name;
 	char			*p1;
 	t_cl			c_p1;
@@ -61,12 +61,17 @@ typedef struct		s_f
 	int				s_p2;
 	t_cor			map_size;
 	char			**m;
+	int				auto_fill;
 }					t_f;
 
-void				init_data(t_f *f);
+void				parse_data(t_f *f);
 void				player_info(t_f *f, char *line);
+void		get_score(t_f *f);
 
-void		draw_map(t_sdl *sdl, t_f *f);
+void		render_filler_head(t_sdl *sdl);
+void		render_map(t_sdl *sdl, t_f *f);
+void		render_status_bar(t_sdl *sdl, t_f *f);
+
 void		get_color_by(char p, t_f *f, t_sdl *sdl);
 void		event_handler(t_sdl *sdl, t_f *f);
 
