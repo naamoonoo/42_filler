@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 01:00:34 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/04 11:51:03 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,15 @@
 
 # define MAP_Y f->map_size.y
 # define MAP_X f->map_size.x
-# define BOX_P_X 20
-# define BOX_P_Y 140
+# define PIECE_Y f->piece_size.y
+# define PIECE_X f->piece_size.x
+# define MAP_P_X 20
+# define MAP_P_Y 140
+# define PIECE_P_X 850
+# define PIECE_P_Y 140
+# define COMMANDS "set  :  1/set  :  2/set  :  3/auto ON  :  RIGHT\
+		/auto OFF  :  LEFT/next  :  DOWN/finish  : ESC"
+# define NUM_OF_INFO 14
 
 typedef struct		s_sdl
 {
@@ -31,10 +38,8 @@ typedef struct		s_sdl
 	SDL_Surface		*scr;
 	SDL_Renderer	*ren;
 	SDL_Event		e;
-	SDL_Texture		*tex[10];
-	SDL_Rect		rect[10];
-	// SDL_Texture		*tex;
-	// SDL_Rect		rect;
+	SDL_Texture		*tex[NUM_OF_INFO];
+	SDL_Rect		rect[NUM_OF_INFO];
 	int				round;
 	int				is_running;
 	int				is_quit;
@@ -67,19 +72,24 @@ typedef struct		s_f
 	t_cor			map_size;
 	char			**m;
 	int				auto_fill;
+	t_cor			piece_size;
+	char			**p;
 }					t_f;
 
 void				parse_data(t_f *f, t_sdl *sdl);
 void				player_info(t_f *f, char *line);
 void		get_score(t_f *f);
+void	current_piece(t_f *f, int lines, int fd);
 
-void		render_filler_head(t_sdl *sdl);
+void		render_piece(t_sdl *sdl, t_f *f);
+void		fuck_norm(t_sdl *sdl, t_f *f, int y, int x);
 void		render_map(t_sdl *sdl, t_f *f);
 void		render_status_bar(t_sdl *sdl, t_f *f);
 
 void		get_color_by(char p, t_f *f, t_sdl *sdl);
 
 void	render_text(t_sdl *sdl, t_f *f);
+void	render_text2(t_sdl *sdl, t_f *f);
 void	get_text_and_rect(char *text, t_sdl *sdl, int idx, SDL_Color color);
 void		event_handler(t_sdl *sdl, t_f *f);
 

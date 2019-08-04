@@ -1,30 +1,48 @@
 #include "visualizer.h"
 
-void	render_filler_head(t_sdl *sdl)
+void	render_piece(t_sdl *sdl, t_f *f)
 {
-	int		fd;
-	char	*line;
-	int		i;
-	int		h;
+	int	width;
+	int	height;
+	int	x;
+	int	y;
 
-	line = NULL;
-	fd = open("./filler_head", O_RDONLY);
-	h = 1;
-	while (get_next_line(fd, &line) > 0)
+	width = 250 / (PIECE_X > 10 ? PIECE_X : 10);
+	height = 250 / (PIECE_Y > 10 ? PIECE_Y : 10);
+	y = -1;
+	while (++y < (PIECE_Y > 10 ? PIECE_Y : 10))
 	{
-		i = -1;
-		while (line[++i])
+		x = -1;
+		while (++x < (PIECE_X > 10 ? PIECE_X : 10))
 		{
-			if (line[i] == '0')
-				continue;
-			SDL_SetRenderDrawColor(sdl->ren, 0, 0, 0, 255);
-			line[i] == '2' ? SDL_RenderFillRect(sdl->ren, &(SDL_Rect){
-				BOX_P_X + i * 20, BOX_P_X * h - 10, 20, 20})
-				: SDL_RenderFillRect(sdl->ren, &(SDL_Rect){
-				BOX_P_X + i * 20, BOX_P_X * h, 20, 20});
+			SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
+			SDL_RenderDrawRect(sdl->ren, &(SDL_Rect){PIECE_P_X + x * width +
+				50, PIECE_P_Y + y * height + 50, width, height});
+			fuck_norm(sdl, f, y, x);
 		}
-		h++;
-		free(line);
+	}
+}
+
+void	fuck_norm(t_sdl *sdl, t_f *f, int y, int x)
+{
+	int	width;
+	int	height;
+
+	width = 250 / (PIECE_X > 10 ? PIECE_X : 10);
+	height = 250 / (PIECE_Y > 10 ? PIECE_Y : 10);
+	if (y < PIECE_Y && x < PIECE_X && f->p[y][x] == '*')
+	{
+		SDL_SetRenderDrawColor(sdl->ren, 0, 0, 0, 255);
+		SDL_RenderFillRect( sdl->ren, &(SDL_Rect){PIECE_P_X + x *
+			width + 1 + 50, PIECE_P_Y + y * height + 1 + 50,
+			width - 2, height - 2});
+	}
+	else if (y < PIECE_Y && x < PIECE_X && f->p[y][x] == '.')
+	{
+		SDL_SetRenderDrawColor(sdl->ren, 0, 0, 0, 255);
+		SDL_RenderFillRect( sdl->ren, &(SDL_Rect){PIECE_P_X + x *
+			width + 10 + 50, PIECE_P_Y + y * height + 10 + 50,
+			width - 20, height - 20});
 	}
 }
 
@@ -45,12 +63,12 @@ void	render_map(t_sdl *sdl, t_f *f)
 		{
 			SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
 			SDL_RenderDrawRect(sdl->ren, &(SDL_Rect){
-				BOX_P_X + x * width, BOX_P_Y + y * height, width, height});
+				MAP_P_X + x * width, MAP_P_Y + y * height, width, height});
 			if (ft_strchr("oOxX", f->m[y][x]))
 			{
 				get_color_by(f->m[y][x], f, sdl);
 				SDL_RenderFillRect( sdl->ren, &(SDL_Rect){
-					BOX_P_X + x * width + 1, BOX_P_Y + y * height + 1,
+					MAP_P_X + x * width + 1, MAP_P_Y + y * height + 1,
 					width - 2, height - 2});
 			}
 		}
@@ -68,10 +86,10 @@ void	render_status_bar(t_sdl *sdl, t_f *f)
 	SDL_RenderDrawRect(sdl->ren, &(SDL_Rect){20, 760, 800, 20});
 	SDL_SetRenderDrawColor(sdl->ren,
 		f->c_p1.r, f->c_p1.g, f->c_p1.b, f->c_p1.a);
-	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){BOX_P_X + 1, 761, p1_w - 1, 18});
+	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){MAP_P_X + 1, 761, p1_w - 1, 18});
 	SDL_SetRenderDrawColor(sdl->ren,
 		f->c_p2.r, f->c_p2.g, f->c_p2.b, f->c_p2.a);
-	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){p1_w + BOX_P_X + 1, 761, p2_w - 1, 18});
+	SDL_RenderFillRect(sdl->ren, &(SDL_Rect){p1_w + MAP_P_X + 1, 761, p2_w - 1, 18});
 }
 
 void	get_color_by(char p, t_f *f, t_sdl *sdl)

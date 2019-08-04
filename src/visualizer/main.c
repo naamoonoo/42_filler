@@ -24,7 +24,7 @@ void	event_handler(t_sdl *sdl, t_f *f)
 	}
 	else if (sdl->e.key.keysym.sym == SDLK_3)
 	{
-		f->c_p1 = (SDL_Color){0x4e, 0x21, 0x61, 255};
+		f->c_p1 = (SDL_Color){0x93, 0x70, 0xdb, 255};
 		f->c_p2 = (SDL_Color){0x58, 0x93, 0xd4, 255};
 	}
 }
@@ -36,7 +36,7 @@ void	main_loop(t_sdl *sdl, t_f *f)
 		while (SDL_PollEvent(&(sdl->e)))
 			event_handler(sdl, f);
 		SDL_RenderClear(sdl->ren);
-		// render_filler_head(sdl);
+		render_piece(sdl, f);
 		render_text(sdl, f);
 		render_map(sdl, f);
 		render_status_bar(sdl, f);
@@ -58,10 +58,6 @@ int main(int ac, char *av[])
 	f = ft_memalloc(sizeof(t_f));
 	f->fd = open(ac == 1 ? "./trace" : av[1], O_RDONLY);
 	parse_data(f, sdl);
-
-
-
-
 	main_loop(sdl, f);
 	while (!sdl->is_quit)
 	{

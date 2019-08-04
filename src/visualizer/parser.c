@@ -15,7 +15,34 @@ void	parse_data(t_f *f, t_sdl *sdl)
 			info_of(&(f->map_size), f->line);
 		if (ft_strstr(f->line, "Plateau"))
 			current_map(f, f->map_size.y + 1, f->fd);
+		else if (ft_strstr(f->line, "Piece"))
+		{
+			info_of(&(f->piece_size), f->line);
+			current_piece(f, f->piece_size.y, f->fd);
+		}
 		free(f->line);
+	}
+}
+
+void	current_piece(t_f *f, int lines, int fd)
+{
+	char		*tmp;
+	int			line;
+	// static int	call = 0;
+
+	line = -1;
+	tmp = NULL;
+	// if (call++ == 0)
+	// {
+		f->p = (char **)malloc(sizeof(char *) * (lines + 1));
+		f->p[lines] = NULL;
+	// }
+	while (++line < lines && get_next_line(fd, &tmp) > 0)
+	{
+		// if (call != 1)
+		// 	free(f->p[line]);
+		f->p[line] = ft_strdup(tmp);
+		ft_strdel(&tmp);
 	}
 }
 
