@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/03 18:25:57 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 19:47:52 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ void			put_piece(t_filler *filler);
 void			get_best_position(t_filler *filler);
 int				is_valid(t_filler *filler, int x, int y);
 int				get_heat_score(t_filler *filler, int x, int y);
-// int				is_valid(t_filler *filler, int x, int y, FILE *f);
-// int				get_heat_score(t_filler *filler, int x, int y, FILE *f);
 
 void			exit_on_error(char *msg);
+void			free_heat_map(t_filler *f);
 #endif

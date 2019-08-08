@@ -57,10 +57,6 @@ int get_info_of(t_cor *size, char *line)
 	ft_strdel(&tmp);
 	size->y = ft_atoi(arr[1]);
 	size->x = ft_atoi(arr[2]);
-	if (size->y <= 0 || size->x <= 0 ||
-		(int)ft_strlen(arr[1]) != ft_numlen(size->x, 10) ||
-		(int)ft_strlen(arr[2]) != ft_numlen(size->y, 10))
-		exit_on_error("getting info");
 	free_char_pp(arr);
 	return (0);
 }
@@ -94,19 +90,16 @@ int	get_current_piece(t_filler *filler, int lines)
 {
 	char		*tmp;
 	int			line;
-	// static int	call = 0;
+	static int	call = 0;
 
 	line = -1;
 	tmp = NULL;
-	// if (call++ == 0)
-	// {
-		filler->piece = (char **)malloc(sizeof(char *) * (lines + 1));
-		filler->piece[lines] = NULL;
-	// }
+	if (call++ > 0)
+		free_char_pp(filler->piece);
+	filler->piece = (char **)malloc(sizeof(char *) * (lines + 1));
+	filler->piece[lines] = NULL;
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
-		// if (call != 1)
-		// 	free(filler->piece[line]);
 		filler->piece[line] = ft_strdup(tmp);
 		ft_strdel(&tmp);
 		if (line == lines - 1)

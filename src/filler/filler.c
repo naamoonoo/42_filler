@@ -2,36 +2,13 @@
 
 void			put_piece(t_filler *filler)
 {
-	// FILE *f;
-	// f = fopen("./trace","w");
-	// for (int j = 0; filler->map[j]; j++)
-	// 	fprintf(f, "%s\n", filler->map[j]);
-
 	get_heat_map(filler);
-
-	// for (int y = 0; y < filler->map_size.y; y++)
-	// {
-	// 	for (int x = 0; x < filler->map_size.x; x++)
-	// 		fprintf(f, "%d\t", filler->heat_map[y][x]);
-	// 	fprintf(f, "\n");
-	// }
-
 	filler->heat_score = 999;
-
 	filler->best_pos = (t_cor){-1, -1};
 	get_best_position(filler);
-
-	// int i = 0;
-	// while (i < filler->map_size.y)
-	// {
-	// 	free(filler->heat_map[i++]);
-	// }
-	// free(filler->heat_map);
-	// free_char_pp(filler->heat_map);
 	if (filler->best_pos.x < 0 && filler->best_pos.y < 0)
 		filler->best_pos = (t_cor){0, 0};
 	FP("%d %d\n", filler->best_pos.y, filler->best_pos.x);
-
 }
 
 

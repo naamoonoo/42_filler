@@ -2,9 +2,12 @@
 
 void	get_heat_map(t_filler *filler)
 {
-	int 	y;
-	int 	x;
+	int 		y;
+	int 		x;
+	static int	call = 0;
 
+	if (call++ > 0)
+		free_heat_map(filler);
 	filler->heat_map = (int **)malloc(sizeof(int *) * (filler->map_size.y));
 	y = -1;
 	while (++y < filler->map_size.y)
@@ -14,22 +17,13 @@ void	get_heat_map(t_filler *filler)
 		while(++x < filler->map_size.x)
 			filler->heat_map[y][x] = 999;
 	}
-	//if surrounded -> 0,0
-
-	//start with middle
-	// after meet
-	if (!is_meet(filler))
-		heat_map_maker(filler, filler->map_size.x / 2, filler->map_size.y / 2, 0);
-	else
+	y = -1;
+	while (++y < filler->map_size.y)
 	{
-		y = -1;
-		while (++y < filler->map_size.y)
-		{
-			x = -1;
-			while(++x < filler->map_size.x)
-				if (ft_strchr(filler->p2, filler->map[y][x]))
-					heat_map_maker(filler, x, y, 0);
-		}
+		x = -1;
+		while(++x < filler->map_size.x)
+			if (ft_strchr(filler->p2, filler->map[y][x]))
+				heat_map_maker(filler, x, y, 0);
 	}
 }
 

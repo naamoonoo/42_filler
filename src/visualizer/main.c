@@ -1,33 +1,16 @@
-#include "visualizer.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/04 12:01:44 by hnam              #+#    #+#             */
+/*   Updated: 2019/08/04 16:32:25 by hnam             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	event_handler(t_sdl *sdl, t_f *f)
-{
-	if (sdl->e.type == SDL_QUIT)
-		sdl->is_quit = 1;
-	if (sdl->e.type == SDL_QUIT || sdl->e.key.keysym.sym == SDLK_ESCAPE)
-		sdl->is_running = 0;
-	else if (sdl->e.key.keysym.sym == SDLK_DOWN)
-		parse_data(f, sdl);
-	else if (sdl->e.key.keysym.sym == SDLK_RIGHT)
-		f->auto_fill = 1;
-	else if (sdl->e.key.keysym.sym == SDLK_LEFT)
-		f->auto_fill = 0;
-	else if (sdl->e.key.keysym.sym == SDLK_1)
-	{
-		f->c_p1 = (SDL_Color){0xf7, 0xb7, 0x31, 255};
-		f->c_p2 = (SDL_Color){0x38, 0x67, 0xd6, 255};
-	}
-	else if (sdl->e.key.keysym.sym == SDLK_2)
-	{
-		f->c_p1 = (SDL_Color){0xa0, 0x85, 0x5b, 255};
-		f->c_p2 = (SDL_Color){0xdd, 0x6b, 0x4d, 255};
-	}
-	else if (sdl->e.key.keysym.sym == SDLK_3)
-	{
-		f->c_p1 = (SDL_Color){0x93, 0x70, 0xdb, 255};
-		f->c_p2 = (SDL_Color){0x58, 0x93, 0xd4, 255};
-	}
-}
+#include "visualizer.h"
 
 void	main_loop(t_sdl *sdl, t_f *f)
 {
@@ -40,14 +23,14 @@ void	main_loop(t_sdl *sdl, t_f *f)
 		render_text(sdl, f);
 		render_map(sdl, f);
 		render_status_bar(sdl, f);
-		SDL_SetRenderDrawColor(sdl->ren, 0xdc, 0xdd, 0xe1, 0); /* background */
+		SDL_SetRenderDrawColor(sdl->ren, 0xdc, 0xdd, 0xe1, 0);
 		f->auto_fill ? parse_data(f, sdl) : 0;
 		SDL_RenderPresent(sdl->ren);
-		SDL_Delay(1000 / 60); /*60 fps */
+		SDL_Delay(1000 / 60);
 	}
 }
 
-int main(int ac, char *av[])
+int		main(int ac, char *av[])
 {
 	t_sdl	*sdl;
 	t_f		*f;
@@ -66,7 +49,6 @@ int main(int ac, char *av[])
 				sdl->is_quit = 1;
 		SDL_Delay(1000);
 	}
-	SDL_DestroyRenderer(sdl->ren);
-	SDL_DestroyWindow(sdl->win);
+	end_process(sdl, f);
 	return (0);
 }
