@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/07 22:50:08 by hnam              #+#    #+#             */
+/*   Updated: 2019/08/07 22:50:35 by hnam             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
-
-int main()
+int	main(void)
 {
 	t_filler	*filler;
-	char *line;
+	char		*line;
 
 	line = NULL;
 	filler = ft_memalloc(sizeof(t_filler));
@@ -17,6 +28,6 @@ int main()
 	}
 	free_char_pp(filler->map);
 	free_char_pp(filler->piece);
-
+	free_heat_map(filler);
 	return (0);
 }

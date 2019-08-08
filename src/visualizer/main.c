@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/04 12:01:44 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 16:32:25 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 22:28:28 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	main_loop(t_sdl *sdl, t_f *f)
 		SDL_RenderClear(sdl->ren);
 		render_piece(sdl, f);
 		render_text(sdl, f);
+		render_empty_map(sdl, f);
 		render_map(sdl, f);
 		render_status_bar(sdl, f);
 		SDL_SetRenderDrawColor(sdl->ren, 0xdc, 0xdd, 0xe1, 0);
@@ -35,7 +36,7 @@ int		main(int ac, char *av[])
 	t_sdl	*sdl;
 	t_f		*f;
 
-	if (ac > 2 && FP("can take only one trace, default is [trace]\n"))
+	if (ac != 2 && FP("./visualizer [trace]\n"))
 		return (0);
 	sdl = sdl_init();
 	f = ft_memalloc(sizeof(t_f));

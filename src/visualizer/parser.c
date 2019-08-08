@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/04 12:04:15 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 16:20:57 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 22:48:15 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,7 @@ void	current_map(t_f *f, int lines, int fd)
 	while (++line < lines && get_next_line(fd, &tmp) > 0)
 	{
 		if (line != 0)
-		{
-			// if (call != 1)
-			// 	free(f->m[line - 1]);
 			f->m[line - 1] = ft_strdup(tmp + 4);
-		}
 		free(tmp);
 	}
 	get_score(f);

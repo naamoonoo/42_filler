@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filler.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/07 22:54:37 by hnam              #+#    #+#             */
+/*   Updated: 2019/08/07 22:54:37 by hnam             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
-void			put_piece(t_filler *filler)
+void	put_piece(t_filler *filler)
 {
 	get_heat_map(filler);
 	filler->heat_score = 999;
@@ -10,7 +22,6 @@ void			put_piece(t_filler *filler)
 		filler->best_pos = (t_cor){0, 0};
 	FP("%d %d\n", filler->best_pos.y, filler->best_pos.x);
 }
-
 
 void	get_best_position(t_filler *filler)
 {
@@ -24,7 +35,7 @@ void	get_best_position(t_filler *filler)
 		ix = -1;
 		while (++ix < filler->map_size.x)
 		{
-			if (ix  < filler->map_size.x &&
+			if (ix < filler->map_size.x &&
 				iy < filler->map_size.y &&
 				!ft_strchr(filler->p2, filler->map[iy][ix]) &&
 				is_valid(filler, ix, iy) &&
@@ -65,7 +76,7 @@ int		is_valid(t_filler *filler, int x, int y)
 	return (valid_pos == 1);
 }
 
-int get_heat_score(t_filler *filler, int x, int y)
+int		get_heat_score(t_filler *filler, int x, int y)
 {
 	t_cor	t;
 	int		min;

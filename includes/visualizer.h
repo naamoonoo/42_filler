@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 16:18:35 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 23:01:12 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@
 # define MAP_P_Y 140
 # define PIECE_P_X 850
 # define PIECE_P_Y 140
-# define COMMANDS "set  :  1/set  :  2/set  :  3/auto ON  :  RIGHT\
-		/auto OFF  :  LEFT/next  :  DOWN/finish  : ESC"
-# define NUM_OF_INFO 14
+# define NUM_OF_INFO 15
 
 typedef struct		s_sdl
 {
@@ -88,16 +86,17 @@ void				render_piece(t_sdl *sdl, t_f *f);
 void				fuck_norm(t_sdl *sdl, t_f *f, int y, int x);
 void				render_map(t_sdl *sdl, t_f *f);
 void				render_status_bar(t_sdl *sdl, t_f *f);
+void				render_empty_map(t_sdl *sdl, t_f *f);
 
 void				render_text(t_sdl *sdl, t_f *f);
-void				render_text2(t_sdl *sdl, t_f *f);
+void				render_text2(t_sdl *sdl);
 void				render_pallete(t_sdl *sdl);
-void				get_text_and_rect(char *text, t_sdl *sdl, int idx, SDL_Color color);
+void				get_text_and_rect(char *text, t_sdl *sdl,
+						int idx, SDL_Color color);
 
 void				get_color_by(char p, t_f *f, t_sdl *sdl);
 void				get_score(t_f *f);
 void				event_handler(t_sdl *sdl, t_f *f);
 void				end_process(t_sdl *sdl, t_f *f);
-
 
 #endif

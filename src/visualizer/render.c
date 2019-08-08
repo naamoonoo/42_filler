@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/04 12:04:06 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 16:31:15 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 22:46:28 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ void	render_map(t_sdl *sdl, t_f *f)
 		x = -1;
 		while (++x < MAP_X)
 		{
-			SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
-			SDL_RenderDrawRect(sdl->ren, &(SDL_Rect){
-				MAP_P_X + x * width, MAP_P_Y + y * height, width, height});
 			if (ft_strchr("oOxX", f->m[y][x]))
 			{
 				get_color_by(f->m[y][x], f, sdl);
@@ -77,6 +74,31 @@ void	render_map(t_sdl *sdl, t_f *f)
 					width - 2, height - 2});
 			}
 		}
+	}
+}
+
+void	render_empty_map(t_sdl *sdl, t_f *f)
+{
+	int	width;
+	int	height;
+	int	x;
+	int	y;
+
+	width = 800 / MAP_X;
+	height = 600 / MAP_Y;
+	y = -1;
+	while (++y <= MAP_Y)
+	{
+		SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
+		SDL_RenderDrawLine(sdl->ren, MAP_P_X, MAP_P_Y + y * height,
+			MAP_P_X + 800, MAP_P_Y + y * height);
+	}
+	x = -1;
+	while (++x <= MAP_X)
+	{
+		SDL_SetRenderDrawColor(sdl->ren, 255, 255, 255, 255);
+		SDL_RenderDrawLine(sdl->ren, MAP_P_X + x * width, MAP_P_Y,
+			MAP_P_X + x * width, MAP_P_Y + 600);
 	}
 }
 
