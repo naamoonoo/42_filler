@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/07 22:53:49 by hnam              #+#    #+#             */
+/*   Updated: 2019/08/07 22:53:50 by hnam             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 void	get_data(t_filler *filler)
@@ -16,13 +28,13 @@ void	get_data(t_filler *filler)
 		{
 			get_info_of(&(filler->piece_size), line);
 			get_current_piece(filler, filler->piece_size.y);
-			break;
+			break ;
 		}
 		ft_strdel(&line);
 	}
 }
 
-int	get_player_info(t_filler *filler)
+void	get_player_info(t_filler *filler)
 {
 	static int	nb_of_p = 0;
 	char		**arr;
@@ -31,41 +43,35 @@ int	get_player_info(t_filler *filler)
 	line = NULL;
 	arr = NULL;
 	if (nb_of_p++)
-		exit_on_error("player info");
+		return ;
 	if (gnl_linked_lst(0, &line) > 0 && strstr(line, "$$$ exec"))
 	{
 		arr = ft_strsplit(line, ' ');
 		ft_strdel(&line);
 	}
 	if (strcmp(arr[0], "$$$") || strcmp(arr[1], "exec") || strcmp(arr[3], ":"))
-		exit_on_error("player info");
+		return ;
 	filler->p1 = !strcmp(arr[2], "p1") ? "oO" : "xX";
 	filler->p2 = !strcmp(arr[2], "p1") ? "xX" : "oO";
 	free_char_pp(arr);
-	return (0);
 }
 
-int get_info_of(t_cor *size, char *line)
+void	get_info_of(t_cor *size, char *line)
 {
 	char	**arr;
 	char	*tmp;
 
 	if (ft_c_cnt(line, ' ') != 2)
-		exit_on_error("getting info");
+		return ;
 	tmp = ft_strtrim_by(line, ':');
 	arr = ft_strsplit(tmp, ' ');
 	ft_strdel(&tmp);
 	size->y = ft_atoi(arr[1]);
 	size->x = ft_atoi(arr[2]);
-	if (size->y <= 0 || size->x <= 0 ||
-		(int)ft_strlen(arr[1]) != ft_numlen(size->x, 10) ||
-		(int)ft_strlen(arr[2]) != ft_numlen(size->y, 10))
-		exit_on_error("getting info");
 	free_char_pp(arr);
-	return (0);
 }
 
-int	get_current_map(t_filler *filler, int lines)
+void	get_current_map(t_filler *filler, int lines)
 {
 	char		*tmp;
 	int			line;
@@ -73,9 +79,9 @@ int	get_current_map(t_filler *filler, int lines)
 
 	line = -1;
 	tmp = NULL;
-
-	if (call++ == 0)
-		filler->map = (char **)malloc(sizeof(char *) * lines);
+	if (call++ > 0)
+		free_char_pp(filler->map);
+	filler->map = (char **)malloc(sizeof(char *) * lines);
 	filler->map[lines - 1] = NULL;
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
@@ -87,30 +93,25 @@ int	get_current_map(t_filler *filler, int lines)
 		}
 		ft_strdel(&tmp);
 	}
-	return (0);
 }
 
-int	get_current_piece(t_filler *filler, int lines)
+void	get_current_piece(t_filler *filler, int lines)
 {
 	char		*tmp;
 	int			line;
-	// static int	call = 0;
+	static int	call = 0;
 
 	line = -1;
 	tmp = NULL;
-	// if (call++ == 0)
-	// {
-		filler->piece = (char **)malloc(sizeof(char *) * (lines + 1));
-		filler->piece[lines] = NULL;
-	// }
+	if (call++ > 0)
+		free_char_pp(filler->piece);
+	filler->piece = (char **)malloc(sizeof(char *) * (lines + 1));
+	filler->piece[lines] = NULL;
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
-		// if (call != 1)
-		// 	free(filler->piece[line]);
 		filler->piece[line] = ft_strdup(tmp);
 		ft_strdel(&tmp);
 		if (line == lines - 1)
-			break;
+			break ;
 	}
-	return (0);
 }

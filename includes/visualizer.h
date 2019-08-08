@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:31:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/04 11:51:03 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/07 23:01:12 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@
 # define MAP_P_Y 140
 # define PIECE_P_X 850
 # define PIECE_P_Y 140
-# define COMMANDS "set  :  1/set  :  2/set  :  3/auto ON  :  RIGHT\
-		/auto OFF  :  LEFT/next  :  DOWN/finish  : ESC"
-# define NUM_OF_INFO 14
+# define NUM_OF_INFO 15
 
 typedef struct		s_sdl
 {
@@ -76,26 +74,29 @@ typedef struct		s_f
 	char			**p;
 }					t_f;
 
+t_sdl				*sdl_init(void);
+
 void				parse_data(t_f *f, t_sdl *sdl);
 void				player_info(t_f *f, char *line);
-void		get_score(t_f *f);
-void	current_piece(t_f *f, int lines, int fd);
+void				current_piece(t_f *f, int lines, int fd);
+void				current_map(t_f *f, int lines, int fd);
+void				info_of(t_cor *size, char *line);
 
-void		render_piece(t_sdl *sdl, t_f *f);
-void		fuck_norm(t_sdl *sdl, t_f *f, int y, int x);
-void		render_map(t_sdl *sdl, t_f *f);
-void		render_status_bar(t_sdl *sdl, t_f *f);
+void				render_piece(t_sdl *sdl, t_f *f);
+void				fuck_norm(t_sdl *sdl, t_f *f, int y, int x);
+void				render_map(t_sdl *sdl, t_f *f);
+void				render_status_bar(t_sdl *sdl, t_f *f);
+void				render_empty_map(t_sdl *sdl, t_f *f);
 
-void		get_color_by(char p, t_f *f, t_sdl *sdl);
+void				render_text(t_sdl *sdl, t_f *f);
+void				render_text2(t_sdl *sdl);
+void				render_pallete(t_sdl *sdl);
+void				get_text_and_rect(char *text, t_sdl *sdl,
+						int idx, SDL_Color color);
 
-void	render_text(t_sdl *sdl, t_f *f);
-void	render_text2(t_sdl *sdl, t_f *f);
-void	get_text_and_rect(char *text, t_sdl *sdl, int idx, SDL_Color color);
-void		event_handler(t_sdl *sdl, t_f *f);
+void				get_color_by(char p, t_f *f, t_sdl *sdl);
+void				get_score(t_f *f);
+void				event_handler(t_sdl *sdl, t_f *f);
+void				end_process(t_sdl *sdl, t_f *f);
 
-void		current_map(t_f *f, int lines, int fd);
-void		info_of(t_cor *size, char *line);
-
-
-t_sdl				*sdl_init();
 #endif
