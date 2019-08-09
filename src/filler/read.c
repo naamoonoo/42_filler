@@ -6,7 +6,7 @@
 /*   By: hnam <hnam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 22:53:49 by hnam              #+#    #+#             */
-/*   Updated: 2019/08/07 22:53:50 by hnam             ###   ########.fr       */
+/*   Updated: 2019/08/08 18:08:43 by hnam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,19 @@ void	get_data(t_filler *filler)
 	line = NULL;
 	while (gnl_linked_lst(STDIN_FILENO, &line) > 0)
 	{
-		if (strstr(line, "Plateau"))
+		if (ft_strstr(line, "Plateau"))
 		{
 			get_info_of(&(filler->map_size), line);
 			get_current_map(filler, filler->map_size.y + 1);
 		}
-		else if (strstr(line, "Piece"))
+		else if (ft_strstr(line, "Piece"))
 		{
 			get_info_of(&(filler->piece_size), line);
+			free(line);
 			get_current_piece(filler, filler->piece_size.y);
 			break ;
 		}
-		ft_strdel(&line);
+		free(line);
 	}
 }
 
@@ -44,10 +45,13 @@ void	get_player_info(t_filler *filler)
 	arr = NULL;
 	if (nb_of_p++)
 		return ;
-	if (gnl_linked_lst(0, &line) > 0 && strstr(line, "$$$ exec"))
+	while (gnl_linked_lst(0, &line) > 0)
 	{
-		arr = ft_strsplit(line, ' ');
-		ft_strdel(&line);
+		if (ft_strstr(line, "$$$ exec"))
+			arr = ft_strsplit(line, ' ');
+		free(line);
+		if (arr)
+			break ;
 	}
 	if (strcmp(arr[0], "$$$") || strcmp(arr[1], "exec") || strcmp(arr[3], ":"))
 		return ;
@@ -65,7 +69,7 @@ void	get_info_of(t_cor *size, char *line)
 		return ;
 	tmp = ft_strtrim_by(line, ':');
 	arr = ft_strsplit(tmp, ' ');
-	ft_strdel(&tmp);
+	free(tmp);
 	size->y = ft_atoi(arr[1]);
 	size->x = ft_atoi(arr[2]);
 	free_char_pp(arr);
@@ -86,12 +90,8 @@ void	get_current_map(t_filler *filler, int lines)
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
 		if (line != 0)
-		{
-			if (call != 1)
-				free(filler->map[line - 1]);
 			filler->map[line - 1] = ft_strdup(tmp + 4);
-		}
-		ft_strdel(&tmp);
+		free(tmp);
 	}
 }
 
@@ -110,7 +110,7 @@ void	get_current_piece(t_filler *filler, int lines)
 	while (++line < lines && gnl_linked_lst(STDIN_FILENO, &tmp) > 0)
 	{
 		filler->piece[line] = ft_strdup(tmp);
-		ft_strdel(&tmp);
+		free(tmp);
 		if (line == lines - 1)
 			break ;
 	}
