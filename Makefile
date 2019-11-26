@@ -6,6 +6,8 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 LIB		=	-L frameworks/SDL2.framework/lib -l SDL2 -L frameworks/SDL2_ttf.framework/lib -l SDL2_ttf
 INCLUDE	=	-Iincludes -Iframeworks/SDL2.framework/includes/SDL2 -Iframeworks/SDL2_ttf.framework/includes
+# LIB		=	-L /usr/local/Cellar/sdl2/2.0.10/lib -l SDL2-2.0.0 -L /usr/local/Cellar/sdl2_ttf/2.0.15/lib -l SDL2_ttf-2.0.0
+# INCLUDE	=	-Iincludes -I /usr/local/Cellar/sdl2/2.0.10/include/SDL2 -I /usr/local/Cellar/sdl2_ttf/2.0.15/include/SDL2
 
 SRC		=	$(wildcard src/filler/*.c)
 OBJ		=	$(patsubst src/filler/%.c, obj/filler/%.o, $(SRC))
